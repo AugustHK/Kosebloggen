@@ -11,14 +11,40 @@
 <body>
     <header class="wrapper">
         <h1><a href="{% url 'articles:list' %}"><img src="{% static 'logo.png' %}"></a></h1>
+        {% if user.is_authenticated %}
+        <p> Welcome, {{ user.username }}. Thanks for logging in.</p>
+        {% endif %}
         <nav>
             <ul>
+                {% if user.is_authenticated %}
                 <li>
                     <form class="logout-link" action="{% url 'accounts:logout' %}" method="POST">
                         {% csrf_token %}
                         <button type="submit">Logout</button>
                     </form>
                 </li>
+
+                <li>
+                    <form class="highlight" action="{% url 'articles:create' %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">New Article</button>
+                    </form>
+                </li>
+                
+                {% else%}
+                <li>
+                    <form class="login-link" action="{% url 'accounts:login' %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Login</button>
+                    </form>
+                </li>
+                <li>
+                    <form class="signup-link" action="{% url 'accounts:signup' %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Signup</button>
+                    </form>
+                </li>
+                {% endif%}
             </ul>
         </nav>
     </header>
